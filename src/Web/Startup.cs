@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Interfaces;
 using ApplicationCore.Services;
 using Infrastructure.Data;
 using Infrastructure.Identity;
@@ -42,7 +42,7 @@ namespace Microsoft.eShopWeb
         private void ConfigureInMemoryDatabases(IServiceCollection services)
         {
             // use in-memory database
-            services.AddDbContext<CatalogContext>(c => 
+            services.AddDbContext<CatalogContext>(c =>
                 c.UseInMemoryDatabase("Catalog"));
 
             // Add Identity DbContext
@@ -117,14 +117,13 @@ namespace Microsoft.eShopWeb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
+        public void Configure(IApplicationBuilder app,
             IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 ListAllRegisteredServices(app);
-                app.UseDatabaseErrorPage();
             }
             else
             {

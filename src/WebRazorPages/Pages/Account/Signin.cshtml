@@ -1,8 +1,7 @@
 @page
 @using System.Collections.Generic
 @using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Http.Authentication
-@model SigninModel
+@model Microsoft.eShopWeb.RazorPages.Pages.Account.SigninModel
 @{
     ViewData["Title"] = "Log in";
 }
@@ -41,7 +40,7 @@
                             <button type="submit" class="btn btn-default btn-brand btn-brand-big">&nbsp;LOG IN&nbsp;</button>
                         </div>
                         <p>
-                            <a asp-page="/Account/Register" 
+                            <a asp-page="/Account/Register"
                                asp-route-returnurl="@ViewData["ReturnUrl"]" class="text">Register as a new user?</a>
                         </p>
                         <p>

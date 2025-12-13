@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Entities.OrderAggregate;
+using ApplicationCore.Entities.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.eShopWeb.ApplicationCore.Entities;
@@ -42,7 +42,7 @@ namespace Infrastructure.Data
             builder.ToTable("Catalog");
 
             builder.Property(ci => ci.Id)
-                .ForSqlServerUseSequenceHiLo("catalog_hilo")
+                .UseHiLo("catalog_hilo")
                 .IsRequired();
 
             builder.Property(ci => ci.Name)
@@ -71,7 +71,7 @@ namespace Infrastructure.Data
             builder.HasKey(ci => ci.Id);
 
             builder.Property(ci => ci.Id)
-               .ForSqlServerUseSequenceHiLo("catalog_brand_hilo")
+               .UseHiLo("catalog_brand_hilo")
                .IsRequired();
 
             builder.Property(cb => cb.Brand)
@@ -86,7 +86,7 @@ namespace Infrastructure.Data
             builder.HasKey(ci => ci.Id);
 
             builder.Property(ci => ci.Id)
-               .ForSqlServerUseSequenceHiLo("catalog_type_hilo")
+               .UseHiLo("catalog_type_hilo")
                .IsRequired();
 
             builder.Property(cb => cb.Type)
