@@ -92,6 +92,8 @@ namespace Microsoft.eShopWeb
                 };
             });
 
+            services.AddMvc(options => options.EnableEndpointRouting = false);
+
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
