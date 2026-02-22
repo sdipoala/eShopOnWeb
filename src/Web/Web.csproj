@@ -30,8 +30,9 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.9"></PackageReference>
     <PackageReference Include="Dapper" Version="2.1.66"></PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8"></PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.20"></PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.9"></PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7"></PackageReference>
+    <PackageReference Include="Amazon.AspNetCore.DataProtection.SSM" Version="4.0.1"></PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj"></ProjectReference>

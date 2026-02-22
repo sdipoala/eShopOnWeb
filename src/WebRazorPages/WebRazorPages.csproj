@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.9"></PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8"></PackageReference>
+    <PackageReference Include="Amazon.AspNetCore.DataProtection.SSM" Version="4.0.1"></PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj"></ProjectReference>

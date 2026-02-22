@@ -1,9 +1,27 @@
+# Exclude version control and IDE
 .dockerignore
 .env
 .git
 .gitignore
 .vs
 .vscode
-*/bin
-*/obj
 **/.toolstarget
+
+# Exclude build artifacts
+**/bin/
+**/obj/
+
+# Exclude terraform infrastructure
+terraform/
+
+# Exclude tests and docs
+tests/
+docs/
+
+# Exclude documentation
+*.md
+LICENSE
+README.md
+
+# Exclude node modules if present
+**/node_modules/

@@ -258,3 +258,20 @@ pub/
 #Ignore marker-file used to know which docker files we have.
 .eshopdocker_*
 \.vscode/
+
+# Terraform
+terraform/.terraform/
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+*.tfvars
+!terraform/variables.tf

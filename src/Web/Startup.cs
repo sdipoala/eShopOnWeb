@@ -7,8 +7,10 @@ using Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.eShopWeb.Interfaces;
 using Microsoft.eShopWeb.Services;
 using Microsoft.Extensions.Configuration;
@@ -52,30 +54,34 @@ namespace Microsoft.eShopWeb
 
         public void ConfigureProductionServices(IServiceCollection services)
         {
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
+
+            // Persist Data Protection keys to AWS Systems Manager Parameter Store
+            services.AddDataProtection()
+                .PersistKeysToAWSSystemsManager("/eShopWeb/DataProtection");
+
             // use real database
             services.AddDbContext<CatalogContext>(c =>
-            {
-                try
-                {
-                    // Requires LocalDB which can be installed with SQL Server Express 2016
-                    // https://www.microsoft.com/en-us/download/details.aspx?id=54284
-                    c.UseSqlServer(Configuration.GetConnectionString("CatalogConnection"));
-                }
-                catch (Exception ex)
-                {
-                    //TODO: log the exception details
-                }
-            });
+                c.UseNpgsql(Configuration.GetConnectionString("CatalogConnection"))
+                 .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning)));
 
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+                options.UseNpgsql(Configuration.GetConnectionString("IdentityConnection"))
+                       .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning)));
 
             ConfigureServices(services);
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHealthChecks();
+            
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
@@ -112,9 +118,6 @@ namespace Microsoft.eShopWeb
             // Add memory cache services
             services.AddMemoryCache();
 
-            services.AddMvc()
-                .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
-
             _services = services;
         }
 
@@ -122,10 +125,13 @@ namespace Microsoft.eShopWeb
         public void Configure(IApplicationBuilder app,
             IHostingEnvironment env)
         {
+            app.UseForwardedHeaders();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 ListAllRegisteredServices(app);
+                app.UseHttpsRedirection();
             }
             else
             {
@@ -133,9 +139,10 @@ namespace Microsoft.eShopWeb
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseAuthentication();
+            
+            app.UseHealthChecks("/health");
 
             app.UseMvc();
         }
